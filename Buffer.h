@@ -6,6 +6,7 @@ class Buffer
 {
 private:
     T *arr;
+    int arrSize;
     int currentSize;
     int front;
     int back;
@@ -14,7 +15,7 @@ private:
     void doubleQueue();
 
 public:
-    Buffer();
+    Buffer(int size);
     ~Buffer();
 
     bool isEmpty();
