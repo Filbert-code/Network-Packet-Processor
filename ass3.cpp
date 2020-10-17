@@ -9,7 +9,8 @@ using namespace std;
 //…
 
 //please don't modify main function
-int main() {
+int main()
+{
     int bufferSize;
     cin >> bufferSize;
     vector<Packet> requests = readPackets(); //read packets from user
