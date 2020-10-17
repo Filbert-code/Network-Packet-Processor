@@ -4,6 +4,15 @@
 template <class T>
 class Buffer
 {
+public:
+    Buffer(int size);
+    ~Buffer() {}
+    bool isEmpty();
+    T &getFront();
+    void makeEmpty();
+    T dequeue();
+    void enqueue(const T &item);
+
 private:
     T *arr;
     int arrSize;
@@ -11,19 +20,8 @@ private:
     int front;
     int back;
 
-    void increment(int &inc);
-    void doubleQueue();
-
-public:
-    Buffer(int size);
-    ~Buffer();
-
-    bool isEmpty();
-    const T &getFront();
-
-    void makeEmpty();
-    T dequeue();
-    void enqueue(const T &item);
+    void increment(int &inc) const;
+    void doubleSize();
 };
 
 #endif
