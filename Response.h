@@ -13,7 +13,7 @@ public:
     Response(int time) : milliseconds(time) {}
     friend ostream &operator<<(ostream &output, Response &r)
     {
-        output << r.milliseconds << endl;
+        output << r.milliseconds;
         return output;
     }
 };

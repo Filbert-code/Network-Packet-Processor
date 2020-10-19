@@ -6,7 +6,7 @@ class Buffer
 {
 public:
     Buffer(int size);
-    ~Buffer() {}
+    ~Buffer() { delete arr; }
     bool isEmpty();
     T &getFront();
     void makeEmpty();

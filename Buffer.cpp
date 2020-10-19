@@ -10,13 +10,6 @@ Buffer<T>::Buffer(int size)
     makeEmpty();
 }
 
-// class destructor, deletes the dynamic array
-template <class T>
-Buffer<T>::~Buffer()
-{
-    delete[] arr;
-}
-
 /* 
     Increase the index of front or back by one and check if 
     either front or back is equal to the size of the array. 

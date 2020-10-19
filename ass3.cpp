@@ -15,11 +15,11 @@ vector<Packet> readPackets(int packetNum)
     int packetBit2;
     cout << "Input:" << endl;
     int index;
-    for (int i = 0; i < packetNum + 1; ++i)
+    for (int i = 0; i < packetNum; ++i)
     {
         cout << '\t';
         cin >> packetBit1 >> packetBit2;
-        packetArr[index] = Packet(packetBit1, packetBit2);
+        packetArr.push_back(Packet(packetBit1, packetBit2));
     }
     return packetArr;
 }
@@ -31,7 +31,7 @@ vector<Response> processPackets(vector<Packet> packet, Buffer<Packet> &buffer)
     int time = 0;
     int packetsInBuffer = 0;
     bool processing = true;
-    int packetIndex;
+    int packetIndex = 0;
 
     while (processing)
     {
@@ -42,34 +42,35 @@ vector<Response> processPackets(vector<Packet> packet, Buffer<Packet> &buffer)
             packetsInBuffer++;
         }
 
+        if (packetsInBuffer == 0 && packetIndex == packet.size())
+        {
+            processing = false;
+            break;
+        }
+
         // get the processing time of the next packet
-        if (pTime == 0 && buffer.getFront().getArrivalTime() == time)
+        if (pTime == 0)
         {
             Packet pack = buffer.dequeue();
             packetsInBuffer--;
             pTime = pack.getProcessingTime();
             Response response(time);
             responses.push_back(response);
-
-            if (packetsInBuffer == 0 && packet.size() == 0)
-            {
-                cout << -2 << endl;
-                processing = false;
-            }
         }
 
         if (pTime > 0)
             pTime--;
+        time++;
     }
     return responses;
 }
 
 void printResponses(vector<Response> responses)
 {
+    cout << "Output: " << endl;
     for (Response r : responses)
     {
-        cout << '\n'
-             << r << endl;
+        cout << '\t' << r << endl;
     }
 }
 
@@ -90,11 +91,13 @@ int main()
     //print responses
     printResponses(responses);
     */
-
+    cout << "Enter size of the Buffer and number of packets: "
+         << "\n\t";
     int bufferSize;
-    cin >> bufferSize;
+    int numOfPackets;
+    cin >> bufferSize >> numOfPackets;
 
-    vector<Packet> requests = readPackets(bufferSize);
+    vector<Packet> requests = readPackets(numOfPackets);
 
     Buffer<Packet> buffer(bufferSize);
 
