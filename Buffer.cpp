@@ -41,7 +41,11 @@ template <class T>
 void Buffer<T>::enqueue(const T &item)
 {
     if (currentSize == arrSize)
-        doubleSize();
+    {
+        cout << "-1" << endl;
+        return;
+    }
+
     increment(back);
     arr[back] = item;
     currentSize++;

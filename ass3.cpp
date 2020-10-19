@@ -1,16 +1,16 @@
 //Starter Code:
 #include <iostream>
 #include "Packet.h"
-//#include "Response.h"
 #include "Buffer.h"
 #include "Buffer.cpp"
 #include "Response.h"
+#include <vector>
 
 using namespace std;
 
-Packet *readPackets(int packetNum)
+vector<Packet> readPackets(int packetNum)
 {
-    Packet *packetArr = new Packet[packetNum];
+    vector<Packet> packetArr;
     int packetBit1;
     int packetBit2;
     cout << "Input:" << endl;
@@ -24,25 +24,52 @@ Packet *readPackets(int packetNum)
     return packetArr;
 }
 
-Response *processPackets(Packet *p, Buffer<Packet> &b)
+vector<Response> processPackets(vector<Packet> packet, Buffer<Packet> &buffer)
 {
-    int bufferSize = p[0].getArrivalTime();
-    int totalPackets = p[0].getProcessingTime();
+    vector<Response> responses;
+    int pTime = 0;
+    int time = 0;
+    int packetsInBuffer = 0;
+    bool processing = true;
+    int packetIndex;
 
-    int numInBuffer;
-
-    for (int i = 1; i < totalPackets; ++i)
+    while (processing)
     {
-        int arrival = p[i].getArrivalTime();
-        int pTime = p[i].getProcessingTime();
-
-        numInBuffer++;
-        if (numInBuffer > bufferSize)
+        // add incoming packets to the buffer
+        while (packet[packetIndex].getArrivalTime() == time)
         {
-            cout << -2;
-            exit(1);
+            buffer.enqueue(packet[packetIndex++]);
+            packetsInBuffer++;
         }
-        // ***STOPPED HERE***
+
+        // get the processing time of the next packet
+        if (pTime == 0 && buffer.getFront().getArrivalTime() == time)
+        {
+            Packet pack = buffer.dequeue();
+            packetsInBuffer--;
+            pTime = pack.getProcessingTime();
+            Response response(time);
+            responses.push_back(response);
+
+            if (packetsInBuffer == 0 && packet.size() == 0)
+            {
+                cout << -2 << endl;
+                processing = false;
+            }
+        }
+
+        if (pTime > 0)
+            pTime--;
+    }
+    return responses;
+}
+
+void printResponses(vector<Response> responses)
+{
+    for (Response r : responses)
+    {
+        cout << '\n'
+             << r << endl;
     }
 }
 
@@ -64,13 +91,16 @@ int main()
     printResponses(responses);
     */
 
-    int packetNum = 2;
+    int bufferSize;
+    cin >> bufferSize;
 
-    Packet *requests = readPackets(packetNum);
+    vector<Packet> requests = readPackets(bufferSize);
 
-    Buffer<Packet> buffer(packetNum);
+    Buffer<Packet> buffer(bufferSize);
 
-    Response *responses = processPackets(requests, buffer);
+    vector<Response> responses = processPackets(requests, buffer);
+
+    printResponses(responses);
 
     return 0;
 }
