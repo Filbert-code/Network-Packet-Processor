@@ -48,6 +48,14 @@ vector<Response> processPackets(vector<Packet> packet, Buffer<Packet> &buffer)
             break;
         }
 
+        if (packetsInBuffer == 0)
+        {
+            Response response(-2);
+            responses.push_back(response);
+            //processing = false;
+            break;
+        }
+
         // get the processing time of the next packet
         if (pTime == 0)
         {
@@ -77,21 +85,7 @@ void printResponses(vector<Response> responses)
 //please don't modify main function
 int main()
 {
-    /*
-    int bufferSize;
-    cin >> bufferSize;
-    vector<Packet> requests = readPackets(); //read packets from user
-
-    //create buffer with the given size
-    Buffer buffer(size);
-
-    //process the packets
-    vector<Response> responses = processPackets(requests, &buffer);
-
-    //print responses
-    printResponses(responses);
-    */
-    cout << "Enter size of the Buffer and number of packets: "
+    cout << "Enter [bufferSize numOfPackets]: "
          << "\n\t";
     int bufferSize;
     int numOfPackets;
