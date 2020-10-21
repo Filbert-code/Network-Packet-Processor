@@ -1,3 +1,7 @@
+// Author: Alex Filbert
+// Date: 10/19/2020
+// Course: CS 300B
+// Assignment: Homework 3
 #include "Buffer.h"
 #include <iostream>
 using namespace std;
@@ -8,6 +12,12 @@ Buffer<T>::Buffer(int size)
 {
     arrSize = size;
     makeEmpty();
+}
+
+template <class T>
+Buffer<T>::~Buffer()
+{
+    delete[] arr;
 }
 
 /* 
@@ -35,7 +45,7 @@ void Buffer<T>::enqueue(const T &item)
 {
     if (currentSize == arrSize)
     {
-        cout << "-1" << endl;
+        cout << "Error, buffer is full." << endl;
         return;
     }
 
@@ -49,11 +59,6 @@ void Buffer<T>::enqueue(const T &item)
 template <class T>
 T Buffer<T>::dequeue()
 {
-    if (isEmpty())
-    {
-        cout << "Buffer is empty." << endl;
-        exit(1);
-    }
     currentSize--;
 
     T frontItem = arr[front];
@@ -65,16 +70,10 @@ T Buffer<T>::dequeue()
 template <class T>
 T &Buffer<T>::getFront()
 {
-    if (isEmpty())
-    {
-        cout << "Buffer is empty." << endl;
-        exit(1);
-    }
-
     return arr[front];
 }
 
-// Doubles the size of the buffer
+// Doubles the size of the buffer (not actually used for implementation with packets)
 template <class T>
 void Buffer<T>::doubleSize()
 {

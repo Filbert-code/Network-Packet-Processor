@@ -1,3 +1,7 @@
+// Author: Alex Filbert
+// Date: 10/19/2020
+// Course: CS 300B
+// Assignment: Homework 3
 #ifndef PACKET_H
 #define PACKET_H
 #include <ostream>
@@ -7,13 +11,15 @@ using namespace std;
 class Packet
 {
 private:
-    int arrivalTime;
-    int processingTime;
+    int arrivalTime;    // time when the packet arrives at the buffer
+    int processingTime; // time it takes for the packet to process
 
 public:
-    Packet() {}
+    Packet() {} // default constructor
+    // 2-arg constructor
     Packet(int arrivalTime, int processingTime) : arrivalTime(arrivalTime), processingTime(processingTime) {}
-    ~Packet() {}
+    ~Packet() {} // default destructor
+    // overloaded insertion operator that allows for printing the state of the object to the console
     friend ostream &operator<<(ostream &output, Packet p)
     {
         cout << "packet: "
