@@ -76,14 +76,6 @@ vector<Response> processPackets(vector<Packet> packet, Buffer<Packet> &buffer)
             responses.push_back(response);
         }
 
-        // add responses that indicate dropped packets to the responses vector
-        for (int i = 0; i < packetsDropped; ++i)
-        {
-            Response response(-1);
-            responses.push_back(response);
-        }
-        packetsDropped = 0;
-
         // remove the next Packet from the buffer and instantiate a Response
         // object with the current time
         if (processingTime == 0)
@@ -94,6 +86,14 @@ vector<Response> processPackets(vector<Packet> packet, Buffer<Packet> &buffer)
             Response response(time);
             responses.push_back(response);
         }
+
+        // add responses that indicate dropped packets to the responses vector
+        for (int i = 0; i < packetsDropped; ++i)
+        {
+            Response response(-1);
+            responses.push_back(response);
+        }
+        packetsDropped = 0;
 
         // update processingTime
         if (processingTime > 0)
